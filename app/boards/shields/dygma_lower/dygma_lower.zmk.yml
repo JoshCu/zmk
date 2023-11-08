@@ -1,0 +1,13 @@
+file_format: "1"
+id: dygma_lower
+name: dygma_lower
+type: shield
+url: https://github.com/kata0510/dygma_lower
+requires: [pro_micro]
+exposes: [i2c_oled]
+features:
+  - keys
+  - display
+siblings:
+  - dygma_left
+  - dygma_lower_right
