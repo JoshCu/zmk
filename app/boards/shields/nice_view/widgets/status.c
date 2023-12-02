@@ -285,12 +285,22 @@ ZMK_DISPLAY_WIDGET_LISTENER(widget_layer_status, struct layer_status_state, laye
 ZMK_SUBSCRIPTION(widget_layer_status, zmk_layer_state_changed);
 
 static void set_wpm_status(struct zmk_widget_status *widget, struct wpm_status_state state) {
+    bool all_zero = true;
     for (int i = 0; i < 9; i++) {
         widget->state.wpm[i] = widget->state.wpm[i + 1];
+        if (widget->state.wpm[i] != 0) {
+            all_zero = false;
+        }
     }
     widget->state.wpm[9] = state.wpm;
+    if (state.wpm != 0) {
+        all_zero = false;
+    }
 
-    draw_top(widget->obj, widget->cbuf, &widget->state);
+    // Update the display only if not all values are zero
+    if (!all_zero) {
+        draw_top(widget->obj, widget->cbuf, &widget->state);
+    }
 }
 
 static void wpm_status_update_cb(struct wpm_status_state state) {
